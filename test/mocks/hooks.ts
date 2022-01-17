@@ -1,4 +1,4 @@
-import { TableItem } from '@types';
+import { ProductsTableItem } from '@types';
 
 // useProducts Mock
 const summaryMock = {
@@ -15,7 +15,7 @@ export const useProducts = jest.fn().mockImplementation(() => ({
 export const ROW_NUMBERS = 5;
 
 // Generate mock tableItems
-const generateList = (): TableItem[] => (
+const generateList = (): ProductsTableItem[] => (
     [...Array(ROW_NUMBERS)].map((_, index) => ({
         id: index,
         name: `Product ${index}`,

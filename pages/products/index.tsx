@@ -6,7 +6,7 @@ import { ReactElement, useState } from 'react';
 import ErrorMessage from '../../components/error';
 import Loading from '../../components/loading';
 import { useProductList } from '../../lib/hooks';
-import { TableItem } from '../../types';
+import { ProductsTableItem } from '../../types';
 
 const Products = () => {
     const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -21,7 +21,7 @@ const Products = () => {
       ...(columnHash && { direction: direction.toLowerCase() }),
     });
     const itemsPerPageOptions = [10, 20, 50, 100];
-    const tableItems: TableItem[] = list.map(({ id, inventory_level: stock, name, price }) => ({
+    const tableItems: ProductsTableItem[] = list.map(({ id, inventory_level: stock, name, price }) => ({
         id,
         name,
         price,

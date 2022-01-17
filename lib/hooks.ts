@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import { useSession } from '../context/session';
-import { ErrorProps, ListItem, Order, QueryParams, ShippingAndProductsInfo } from '../types';
+import { ErrorProps, Order, ProductsListItem, QueryParams, ShippingAndProductsInfo } from '../types';
 
 async function fetcher(url: string, query: string) {
     const res = await fetch(`${url}?${query}`);
@@ -47,7 +47,7 @@ export function useProductList(query?: QueryParams) {
     };
 }
 
-export function useProductInfo(pid: number, list: ListItem[]) {
+export function useProductInfo(pid: number, list: ProductsListItem[]) {
     const { context } = useSession();
     const params = new URLSearchParams({ context }).toString();
     const product = list.find(item => item.id === pid);
@@ -91,4 +91,34 @@ export const useShippingAndProductsInfo = (orderId: number) => {
         isLoading: !data && !error,
         error,
     };
+}
+
+export function usePromotions(query?: QueryParams) {
+     const { context } = useSession();
+     const params = new URLSearchParams({ ...query, context }).toString();
+
+     const { data, error, mutate: mutateList} = useSWR(context ? ['/api/promotions', params] : null, fetcher);
+
+     return {
+         list: data?.data,
+         meta: data?.meta,
+         isLoading: !data && !error,
+         error,
+         mutateList,
+     }
+}
+
+export function useCodes(promotionId: number, query?: QueryParams) {
+    const { context } = useSession();
+    const params = new URLSearchParams({ ...query, context }).toString();
+
+    const { data, error, mutate: mutateList } = useSWR(context ? [`/api/promotions/${promotionId}/codes`, params] : null, fetcher);
+
+    return {
+        list: data?.data,
+        meta: data?.meta,
+        isLoading: !data && !error,
+        error,
+        mutateList,
+    }
 }

@@ -1,11 +1,11 @@
 import { Button, Checkbox, Flex, FormGroup, Input, Panel, Select, Form as StyledForm, Textarea } from '@bigcommerce/big-design';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { FormData, StringKeyValue } from '../types';
+import { ProductsFormData, StringKeyValue } from '../types';
 
 interface FormProps {
-    formData: FormData;
+    formData: ProductsFormData;
     onCancel(): void;
-    onSubmit(form: FormData): void;
+    onSubmit(form: ProductsFormData): void;
 }
 
 const FormErrors = {
@@ -15,7 +15,7 @@ const FormErrors = {
 
 const Form = ({ formData, onCancel, onSubmit }: FormProps) => {
     const { description, isVisible, name, price, type } = formData;
-    const [form, setForm] = useState<FormData>({ description, isVisible, name, price, type });
+    const [form, setForm] = useState<ProductsFormData>({ description, isVisible, name, price, type });
     const [errors, setErrors] = useState<StringKeyValue>({});
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

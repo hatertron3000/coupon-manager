@@ -1,4 +1,4 @@
-export interface FormData {
+export interface ProductsFormData {
     description: string;
     isVisible: boolean;
     name: string;
@@ -6,14 +6,14 @@ export interface FormData {
     type: string;
 }
 
-export interface TableItem {
+export interface ProductsTableItem {
     id: number;
     name: string;
     price: number;
     stock: number;
 }
 
-export interface ListItem extends FormData {
+export interface ProductsListItem extends ProductsFormData {
     id: number;
 }
 

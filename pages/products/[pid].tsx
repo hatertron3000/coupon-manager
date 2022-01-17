@@ -4,7 +4,7 @@ import Form from '../../components/form';
 import Loading from '../../components/loading';
 import { useSession } from '../../context/session';
 import { useProductInfo, useProductList } from '../../lib/hooks';
-import { FormData } from '../../types';
+import { ProductsFormData } from '../../types';
 
 const ProductInfo = () => {
     const router = useRouter();
@@ -17,7 +17,7 @@ const ProductInfo = () => {
 
     const handleCancel = () => router.push('/products');
 
-    const handleSubmit = async (data: FormData) => {
+    const handleSubmit = async (data: ProductsFormData) => {
         try {
             const filteredList = list.filter(item => item.id !== pid);
             const { description, isVisible, name, price, type } = data;
