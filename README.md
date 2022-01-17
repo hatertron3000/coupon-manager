@@ -1,10 +1,11 @@
-# NextJS Sample App
+# Coupon Manager
+This is a coupon manager app built with the [BigCommerce NextJS Sample App](https://github.com/bigcommerce/sample-app-nodejs). This app enables users to view, bulk generate, and bulk export coupon codes for [Coupon Promotions](https://support.bigcommerce.com/s/article/Coupon-Promotions).
 
-This demo includes all of the files necessary to get started with a basic, hello world app. This app was built using NextJS, BigDesign, Typescript, and React.
+This app is provided as-is with no guarantees.
 
 ## App Installation
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/bigcommerce/sample-app-nodejs)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/hatertron3000/coupon-manager)
 
 To get the app running locally, follow these instructions:
 

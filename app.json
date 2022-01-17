@@ -4,6 +4,9 @@
   "repository": "https://github.com/bigcommerce/sample-app-nodejs",
   "keywords": ["Node", "Heroku"],
   "addons": ["cleardb:ignite"],
+  "engines": {
+    "node": "16.x"
+  },
   "env": {
     "CLIENT_ID": {
       "description": "The client id of your app, provided by the BigCommerce developer portal."
