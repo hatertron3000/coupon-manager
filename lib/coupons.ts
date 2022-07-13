@@ -13,11 +13,11 @@ export function makeCode(length: number, codes: string[] = []): string {
     return result
 }
 
-export function generateCodes(quantity: number, length:number): string[] {     
+export function generateCodes(quantity: number, length:number, prefix = ""): string[] {     
     const codes = []
 
     for (let i = 0; i < quantity; i++) {
-        const code = makeCode(length, codes)
+        const code = prefix + makeCode(length, codes)
         codes.push(code)
     }
 
