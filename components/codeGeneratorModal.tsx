@@ -1,4 +1,4 @@
-import { Box, Counter, Flex, Form, FormGroup, Input, InputProps, Message, Modal, ModalAction, ProgressBar, Stepper, Text } from '@bigcommerce/big-design'
+import { Box, Counter, Form, FormGroup, Input, InputProps, Message, Modal, ModalAction, ProgressBar, Stepper, Text } from '@bigcommerce/big-design'
 import { ReactElement, useState } from 'react';
 import { makeDataUrl } from '@lib/util';
 import { useSession } from '../context/session'
