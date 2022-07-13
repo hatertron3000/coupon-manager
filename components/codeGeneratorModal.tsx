@@ -1,4 +1,4 @@
-import { Box, Counter, Flex, Message, Modal, ModalAction, ProgressBar, Stepper, Text } from '@bigcommerce/big-design'
+import { Box, Counter, Flex, Form, FormGroup, Input, InputProps, Message, Modal, ModalAction, ProgressBar, Stepper, Text } from '@bigcommerce/big-design'
 import { ReactElement, useState } from 'react';
 import { makeDataUrl } from '@lib/util';
 import { useSession } from '../context/session'
@@ -13,15 +13,19 @@ const CodeGeneratorModal = ({ promotionId, onClose }: codeGeneratorModalProps): 
     const encodedContext = useSession()?.context;
     const steps = ["Configure Codes", "Generate Codes", "Download Results"]
     const [quantity, setQuantity] = useState(1000);
+    const [prefix, setPrefix] = useState("");
     const [length, setLength] = useState(12);
     const [maxUses, setMaxUses] = useState(0);
     const [maxUsesPerCustomer, setMaxUsesPerCustomer] = useState(0);
-    const [abortController] = useState(new AbortController())
-    const [coupons, setCoupons] = useState([])
-    const [currentStep, setCurrentStep] = useState(0)
-    const [timestamp, setTimestamp] = useState(Date.now())
+    const [abortController] = useState(new AbortController());
+    const [coupons, setCoupons] = useState([]);
+    const [currentStep, setCurrentStep] = useState(0);
+    const [timestamp, setTimestamp] = useState(Date.now());
+    const maxCouponCodeLength = 50
 
-
+    const handlePrefixChange: InputProps['onChange'] = (event) => {
+        setPrefix(event.target.value)
+    }
 
     const handleClose = () => {
         abortController.abort()
@@ -60,7 +64,7 @@ const CodeGeneratorModal = ({ promotionId, onClose }: codeGeneratorModalProps): 
             setCurrentStep(1)
             const signal = abortController.signal
 
-            const codes = generateCodes(quantity, length)
+            const codes = generateCodes(quantity, length, prefix)
 
             for (const code of codes) {
                 if(signal.aborted)
@@ -113,54 +117,64 @@ const CodeGeneratorModal = ({ promotionId, onClose }: codeGeneratorModalProps): 
     const renderContent = () => {
         switch (currentStep) {
             case 0:
-                return <>
-                    <Flex justifyContent="space-evenly">
-                        <Box>
-                            <Box marginBottom='medium'>
-                                <Counter 
-                                    min={1}
-                                    max={100000}
-                                    value={quantity}
-                                        onCountChange={setQuantity}
-                                    label="Quantity"
-                                    description="The number of coupons to generate"
-                                />
-                            </Box>
-                            <Box>
-                                <Counter
-                                    min={6}
-                                    max={50}
-                                    value={length}
-                                    onCountChange={setLength}
-                                    label="Length"
-                                    description="The number of characters in the code"
-                                />
-                            </Box>
-                        </Box>
-                        <Box>
-                            <Box marginBottom="medium">
-                                <Counter
-                                    min={0}
-                                    max={2147483647}
-                                    value={maxUses}
-                                    onCountChange={setMaxUses}
-                                    label="Maximum uses"
-                                    description="The maximum number of times that all customers may use one of these coupon codes. 0 is unlimited."
-                                />
-                            </Box>
-                            <Box>
-                                <Counter
-                                    min={0}
-                                    max={2147483647}
-                                    value={maxUsesPerCustomer}
-                                    onCountChange={setMaxUsesPerCustomer}
-                                    label="Maximum uses per customer"
-                                    description="The maximum number of times that a specific customer may use one of these coupon codes. 0 inherits this value from the promotion."
-                                />
-                            </Box>
-                        </Box>
-                    </Flex>
-                </>
+                return <Form>
+                    <Box marginBottom='medium'>
+                        <FormGroup>
+                            <Input
+                                description={`A string to prefix all coupon codes. Max length of codes + prefix is ${maxCouponCodeLength}`}
+                                label="Prefix"
+                                onChange={handlePrefixChange}
+                                type="text"
+                                value={prefix}
+                                maxLength={maxCouponCodeLength - length}
+                            />
+                        </FormGroup>
+                    </Box>
+                    <Box marginBottom='medium'>
+                        <FormGroup>
+                            <Counter 
+                                min={1}
+                                max={100000}
+                                value={quantity}
+                                    onCountChange={setQuantity}
+                                label="Quantity"
+                                description="The number of coupons to generate"
+                                required={true}
+                            />
+                            <Counter
+                                min={6}
+                                max={maxCouponCodeLength - prefix.length}
+                                value={length}
+                                onCountChange={setLength}
+                                label="Length"
+                                description="The number of characters in the code after the prefix."
+                                required={true}
+                            />
+                        </FormGroup>
+                    </Box>
+                    <Box marginBottom="medium">
+                        <FormGroup>
+                            <Counter
+                                min={0}
+                                max={2147483647}
+                                value={maxUses}
+                                onCountChange={setMaxUses}
+                                label="Maximum uses"
+                                description="Max total uses; 0 is unlimited."
+                                required={true}
+                            />
+                            <Counter
+                                min={0}
+                                max={2147483647}
+                                value={maxUsesPerCustomer}
+                                onCountChange={setMaxUsesPerCustomer}
+                                label="Maximum uses per customer"
+                                description="0 inherits this value from the promotion."
+                                required={true}
+                            />
+                        </FormGroup>
+                    </Box>
+                </Form>
             case 1:
                 return <Box marginVertical={"large"}>
                     <Text>Created {coupons.length} of {quantity} coupons</Text>
